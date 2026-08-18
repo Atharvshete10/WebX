@@ -4,8 +4,9 @@
  * Akashganga — Space / Exoplanets Information Portal
  */
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { Box3, Vector3 } from 'three';
 
 import {
   Menu,
@@ -27,7 +28,6 @@ import {
   OrbitControls,
   useGLTF,
   Environment,
-  Center,
 } from '@react-three/drei';
 
 import { useStarfield } from './hooks/useStarfield';
@@ -436,16 +436,59 @@ const TRIVIA_DATA = [
 function PlanetModel({ model }) {
   const { scene } = useGLTF(model);
 
+  /*
+   * Automatically calculate the model's bounding box.
+   * This makes models of completely different original sizes
+   * appear at a consistent size inside the viewer.
+   */
+
+  const modelData = useMemo(() => {
+    const box = new Box3().setFromObject(scene);
+
+    const size = new Vector3();
+    const center = new Vector3();
+
+    box.getSize(size);
+    box.getCenter(center);
+
+    const maxDimension = Math.max(
+      size.x,
+      size.y,
+      size.z
+    );
+
+    /*
+     * Target size inside the 3D viewer.
+     *
+     * Increasing this makes the planet larger.
+     * Decreasing it makes the planet smaller.
+     */
+    const TARGET_SIZE = 3.0;
+
+    const scale =
+      maxDimension > 0
+        ? TARGET_SIZE / maxDimension
+        : 1;
+
+    return {
+      scale,
+      center: center.toArray(),
+    };
+  }, [scene]);
+
   return (
-    <Center>
-      <primitive
-        object={scene}
-        scale={2.2}
-      />
-    </Center>
+    <group
+      position={[
+        -modelData.center[0] * modelData.scale,
+        -modelData.center[1] * modelData.scale,
+        -modelData.center[2] * modelData.scale,
+      ]}
+      scale={modelData.scale}
+    >
+      <primitive object={scene} />
+    </group>
   );
 }
-
 
 /* ============================================================
    PLANET VIEWER
@@ -567,8 +610,15 @@ function PlanetViewer({ planet, onClose }) {
 
             <Canvas
               camera={{
-                position: [0, 0, 5],
-                fov: 45,
+                position: [0, 0, 5.5],
+                fov: 40,
+                near: 0.1,
+                far: 100,
+              }}
+              dpr={[1, 2]}
+              gl={{
+                antialias: true,
+                alpha: true,
               }}
             >
 
