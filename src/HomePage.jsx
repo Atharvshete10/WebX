@@ -30,6 +30,12 @@ import {
   Environment,
 } from '@react-three/drei';
 
+import kepler22bImage from './assets/kepler-22b.png';
+import lhs1140bImage from './assets/lhs-1140-b.png';
+import wasp12bImage from './assets/wasp-12b.png';
+import proximaCentauriBImage from './assets/proxima-centauri-b.png';
+import trappist1eImage from './assets/trappist-1e.png';
+
 import { useStarfield } from './hooks/useStarfield';
 import { useWebCursor } from './hooks/useWebCursor';
 import { useWebShooter } from './hooks/useWebShooter';
@@ -295,7 +301,7 @@ const EXOPLANETS_DATA = [
     id: 1,
     name: 'Kepler-22B',
     slug: 'kepler-22b',
-    image: spidermanImage,
+    image: kepler22bImage,
 
     // File is inside public/planets/
     model: '/planets/kepler-22b.glb',
@@ -315,7 +321,7 @@ const EXOPLANETS_DATA = [
     id: 2,
     name: 'LHS-1140-B',
     slug: 'lhs-1140-b',
-    image: spidermanImage,
+    image: lhs1140bImage,
 
     model: '/planets/lhs-1140-b.glb',
 
@@ -334,7 +340,7 @@ const EXOPLANETS_DATA = [
     id: 3,
     name: 'WASP-12B',
     slug: 'wasp-12b',
-    image: spidermanImage,
+    image: wasp12bImage,
 
     model: '/planets/wasp-12b.glb',
 
@@ -353,7 +359,7 @@ const EXOPLANETS_DATA = [
     id: 4,
     name: 'Proxima Centauri B',
     slug: 'proxima-centauri-b',
-    image: spidermanImage,
+    image: proximaCentauriBImage,
 
     model: '/planets/proxima-centauri-b.glb',
 
@@ -372,7 +378,7 @@ const EXOPLANETS_DATA = [
     id: 5,
     name: 'TRAPPIST-1e',
     slug: 'trappist-1e',
-    image: spidermanImage,
+    image: trappist1eImage,
 
     model: '/planets/trappist-1e.glb',
 
